@@ -276,16 +276,19 @@ Auth::user()->role_id == 1)
     <i class="fas fa-user-plus mx-1"></i>Masukan Pemesanan
 </button>
 <br>
-<a href="{{url("/resi_member")}}" class="btn btn-success mb-3" 
-@foreach ($member as $item)
-    @if($item->flag_status > 2)
-    hidden
-    @elseif ($cek_jumlah_pesanan->jml_pesanan >= 5)
-    
-    @else
-    hidden
-    @endif
-@endforeach>
+<?php
+    $isHidden = 'hidden';
+    foreach ($member as $item){
+        if($item->flag_status > 2){
+            $isHidden = 'hidden';
+        }else if ($cek_jumlah_pesanan->jml_pesanan >= 5){
+            $isHidden = '';
+        }else{
+            $isHidden = 'hidden';
+        }
+    }
+?>
+<a href="{{url('/resi_member')}}" class="btn btn-success mb-3" {{$isHidden}}>
     <i class="fas fa-shopping-cart"></i> Lanjut Pembayaran
 </a>
 
@@ -311,7 +314,7 @@ Auth::user()->role_id == 1)
                         >{{$raw->status_deskripsi}}
                     </h3></td>
             <td class="text-center">
-                @if ($date_now_1 <= $raw->tanggal_pertandingan)
+                @if ($date_now_1 < $raw->tanggal_pertandingan)
                     <button class="badge bg-primary text-light text-center" data-toggle="modal" data-target="#exampleModal{{$raw->jadwal}}">Ganti Jadwal</button>
                 @else
                     <h3 class="badge bg-info text-light text-center">JADWAL TIDAK DAPAT DIUBAH</h3>
@@ -322,12 +325,15 @@ Auth::user()->role_id == 1)
         @endforeach
     </tbody>
 </table>
+
 <div class="modal fade" tabindex="-1" id="modalPesanMember" data-backdrop="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Pesan Member</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body" id="isi_pesan_member">
             </div>
@@ -354,7 +360,7 @@ Auth::user()->role_id == 1)
                         @csrf
                         <div class="form-group">
                             <label for="tang">Tanggal</label>
-                            <input type="date" class="form-control @error ('tanggal') is-invalid @enderror" id="tanggal"
+                            <input type="date" class="form-control @error ('tanggal') is-invalid @enderror" id="tanggal_re_{{ $raw->jadwal }}"
                                 placeholder="Pilih tanggal" name="tanggal" value="{{$raw->tanggal_pertandingan}}" {{old('tanggal')}}>
                             @error('tanggal')
                             <div class="invalid-feedback">
@@ -364,29 +370,27 @@ Auth::user()->role_id == 1)
                         </div>
                         <div class="form-group">
                             <label for="tang">Jam</label>
-                            <select name="jam" class="form-control @error ('jam') is-invalid @enderror" id="jam"
-                                value="{{old('jam')}}">
+                            <select name="jam" class="form-control @error ('jam') is-invalid @enderror" id="jam_re_{{ $raw->jadwal }}">
                                 @error('jam')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
                                 @enderror
-                                <option selected disabled value="">{{ $raw->jam_pertandingan }}</option>
-                                <option value="08:00">08:00</option>
-                                <option value="09:00">09:00</option>
-                                <option value="10:00">10:00</option>
-                                <option value="11:00">11:00</option>
-                                <option value="12:00">12:00</option>
-                                <option value="13:00">13:00</option>
-                                <option value="14:00">14:00</option>
-                                <option value="15:00">15:00</option>
-                                <option value="16:00">16:00</option>
-                                <option value="17:00">17:00</option>
-                                <option value="18:00">18:00</option>
-                                <option value="19:00">19:00</option>
-                                <option value="20:00">20:00</option>
-                                <option value="21:00">21:00</option>
-                                <option value="22:00">22:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '08:00') selected @endif value="08:00">08:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '09:00') selected @endif value="09:00">09:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '10:00') selected @endif value="10:00">10:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '11:00') selected @endif value="11:00">11:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '12:00') selected @endif value="12:00">12:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '13:00') selected @endif value="13:00">13:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '14:00') selected @endif value="14:00">14:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '15:00') selected @endif value="15:00">15:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '16:00') selected @endif value="16:00">16:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '17:00') selected @endif value="17:00">17:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '18:00') selected @endif value="18:00">18:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '19:00') selected @endif value="19:00">19:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '20:00') selected @endif value="20:00">20:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '21:00') selected @endif value="21:00">21:00</option>
+                                <option @if (substr($raw->jam_pertandingan, 0, 5) == '22:00') selected @endif value="22:00">22:00</option>
                             </select>
                         </div>
                 </div>
@@ -394,7 +398,7 @@ Auth::user()->role_id == 1)
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                     <button hidden type="submit" class="btn btn-primary" id="reschedule">Pesan</button>
-                    <button type="button" class="btn btn-primary" onclick="cekReschedule()">Pesan</button>
+                    <button type="button" class="btn btn-primary" onclick="cekReschedule({{ $raw->jadwal }})">Pesan</button>
                 </div>
                 </form>
             </div>
@@ -409,33 +413,39 @@ Auth::user()->role_id == 1)
         var tanggal = $("#tanggal").val();
         var jam = $("#jam").val();
         var token = '{{ csrf_token() }}';
+        var date_now = '{{$date_now}}';
 
-        $.ajax({
-            method: "POST",
-            url: '{{url('check_pesanan')}}',
-            data: {
-                '_token': token,
-                'jam': jam,
-                'tanggal': tanggal
-            },
-            dataType: "json",
-            success: function (res) {
-                if (res.exists) {
-                    alert("Jam Sudah Di Pesan");
-                } else {
-                    return cekJumlah();
+        if(tanggal < date_now){
+            alert("Anda tidak dapat memesan dengan tanggal kurang dari tanggal hari ini");
+        }else{
+            $.ajax({
+                method: "POST",
+                url: '{{url('check_pesanan')}}',
+                data: {
+                    '_token': token,
+                    'jam': jam,
+                    'tanggal': tanggal
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (res.exists) {
+                        alert("Jam Sudah Di Pesan");
+                    } else {
+                        return cekJumlah();
+                    }
+                },
+                error: function (jqXHR, exception) {
+
                 }
-            },
-            error: function (jqXHR, exception) {
-
-            }
-        });
+            });
+        }
 
     }
-    function cekReschedule() {
-        var tanggal = $("#tanggal").val();
-        var jam = $("#jam").val();
+    function cekReschedule(id_jadwal) {
+        var tanggal = $("#tanggal_re_"+id_jadwal).val();
+        var jam = $("#jam_re_"+id_jadwal).val();
         var token = '{{ csrf_token() }}';
+        console.log(tanggal,jam);
 
         $.ajax({
             method: "POST",

@@ -242,7 +242,7 @@ class VerifikasiController extends Controller
                                 ->where('jadwal_pertandingan.metode_pembayaran', '!=', 1)  
                                 ->WHERE('jadwal_pertandingan.flag_status', 7)
                                 ->orWhere('jadwal_pertandingan.metode_pembayaran', '!=', 1) 
-                                ->WHERE('jadwal_pertandingan.flag_status', 3)
+                                ->WHERE('jadwal_pertandingan.flag_status', 6)
                                 ->groupBy('member.id_user_member')
                                 // ->groupBy('member.id_user_member')
                                 // ->orderBy('jadwal_pertandingan.id_pertandingan')
