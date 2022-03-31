@@ -28,6 +28,7 @@ class HomeController extends Controller
     {
         $user_id = Auth::user()->id;
         $inventory = DB::table("inventory")->get();
+        $date_now = date('Y-m-d', strtotime(date("Y-m-d")));
         $date_now_1 = date('Y-m-d', strtotime("+1 day", strtotime(date("Y-m-d"))));
         $validasi_dp = DB::TABLE('non_member')
                        ->LEFTJOIN("jadwal_pertandingan","non_member.jadwal","jadwal_pertandingan.id_pertandingan")
@@ -61,7 +62,7 @@ class HomeController extends Controller
                                     ->where('id_user_member', $user_id)
                                     ->first();
         // dd($member);
-         return view('home.home',compact('inventory','validasi_dp','member', 'date_now_1', 'cek_jumlah_pesanan'));
+         return view('home.home',compact('inventory','validasi_dp','member', 'date_now', 'date_now_1', 'cek_jumlah_pesanan'));
     }
 
      //TODO SIMPAN INVENTORY
