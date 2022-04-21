@@ -1,0 +1,10 @@
+Bug Tombol Lanjut Pembayaran Sudah Muncul Walau Belum Pesan
+Bug Jam Ganti pesanan yg harusnya default 14:00 jadi 14:00:00 dan berulang jadi 2 kali
+Bug tombol close modal pesan member tidak bisa diklik
+Bug rescheduling pesanan muncul alert terus
+Bug tombol rescheduling masih muncul di h-1
+Bug masih bisa input dengan tanggal kurang dari tanggal hari ini
+
+FIX
+role owner hanya membuka inventory
+role admin hanya membuka verifikasi

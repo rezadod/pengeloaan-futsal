@@ -61,8 +61,52 @@ class HomeController extends Controller
                                     )
                                     ->where('id_user_member', $user_id)
                                     ->first();
+
+
+        $pesanan = DB::table('jadwal_pertandingan')
+                        ->LEFTJOIN('member','jadwal_pertandingan.id_pertandingan', 'member.jadwal')
+                        ->LEFTJOIN('non_member','jadwal_pertandingan.id_pertandingan', 'non_member.jadwal')
+                        ->LEFTJOIN('paket','jadwal_pertandingan.paket', 'paket.id_paket')
+                        ->LEFTJOIN('status_pesanan', 'jadwal_pertandingan.flag_status', 'status_pesanan.id_status_pesanan')
+                        ->LEFTJOIN('users', 'member.id_user_member', 'users.id')
+                        ->select(
+                            'jadwal_pertandingan.id_pertandingan as jadwal',
+                            'jadwal_pertandingan.tanggal_pertandingan as tanggal',
+                            'jadwal_pertandingan.jam_pertandingan as jam',
+                            'jadwal_pertandingan.nama_tim',
+                            'jadwal_pertandingan.paket',
+                            'jadwal_pertandingan.flag_status',
+                            'member.id_user_member',
+                            'member.updated_at',
+                            'non_member.tambahan_rompi',
+                            'non_member.id_non_member',
+                            'non_member.biaya_tambahan',
+                            'non_member.updated_at',
+                            'non_member.nama_pemesan as nama_non_member',
+                            'users.name as nama_member',
+                            'paket.deskripsi as nama_paket',
+                            'paket.harga',
+                            'status_pesanan.deskripsi',
+                        )
+                        ->whereIn('jadwal_pertandingan.flag_status', [4, 5])
+                        ->get();
+                        // dd($pesanan);
+        $status_pesanan = DB::table('jadwal_pertandingan')
+                            ->LEFTJOIN('member','jadwal_pertandingan.id_pertandingan', 'member.jadwal')
+                            ->LEFTJOIN('non_member','jadwal_pertandingan.id_pertandingan', 'non_member.jadwal')
+                            ->select(
+                                DB::raw('count(case when jadwal_pertandingan.flag_status = 5 then jadwal_pertandingan.id_pertandingan else null end) as batal_transaksi'),
+                                DB::raw('count(case when jadwal_pertandingan.flag_status != 5 then jadwal_pertandingan.id_pertandingan else null end) as selesai_transaksi')
+                            )
+                            ->get();
+                            // dd($pesanan);
+        foreach ($status_pesanan as $key) {
+            $jml_batal_transaksi = $key->batal_transaksi;
+            $jml_selesai_transaksi = $key->selesai_transaksi;
+        }
+
         // dd($member);
-         return view('home.home',compact('inventory','validasi_dp','member', 'date_now', 'date_now_1', 'cek_jumlah_pesanan'));
+         return view('home.home',compact('inventory','validasi_dp','member', 'date_now', 'date_now_1', 'cek_jumlah_pesanan','pesanan', 'jml_batal_transaksi', 'jml_selesai_transaksi'));
     }
 
      //TODO SIMPAN INVENTORY

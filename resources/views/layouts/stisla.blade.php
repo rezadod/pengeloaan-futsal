@@ -80,7 +80,7 @@
                     @if(Auth::user()->role_id == 2
                     )
                     <ul class="sidebar-menu">
-                        <li class="menu-header">INVENTORY</li>
+                        <li class="menu-header">KEUANGAN</li>
                         <li class="nav-item dropdown
                                 @if(
                                     Route::currentRouteName() == 'home')
@@ -88,27 +88,11 @@
                                 @endif">
                             <a href=" #" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fas fa-archive"></i>
-                                <span>Inventory</span></a>
+                                <span>Laporan Keuangan</span></a>
                             <ul class="dropdown-menu">
 
                                 <li><a class="nav-link {{ (Route::currentRouteName() == 'home')?'nav-active':'' }}"
-                                        href="{{url('home')}}">Lihat Inventory</a></li>
-                            </ul>
-                        </li>
-                        <li class="menu-header">KEUANGAN</li>
-                        <li class="nav-item dropdown
-                                @if(Route::currentRouteName() == 'laporan_keuangan_futsal' ||
-                                    Route::currentRouteName() == 'laporan_keuangan_snack'                                
-                                    ) 
-                                    active
-                                @endif">
-                            <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-book"></i>
-                                <span>Laporan Keuangan</span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link {{ (Route::currentRouteName() == 'laporan_keuangan_futsal')?'nav-active':'' }}"
-                                        href="{{url('laporan_keuangan_futsal')}}">Keuangan Futsal</a></li>
-                                <li><a class="nav-link {{ (Route::currentRouteName() == 'laporan_keuangan_snack')?'nav-active':'' }}"
-                                        href="{{url('laporan_keuangan_snack')}}">Keuangan Penjualan</a></li>
+                                        href="{{url('home')}}">Keuangan Futsal</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -134,19 +118,6 @@
                                         href="{{url('verifikasi_pelunasan')}}">Verifikasi Pelunasan</a></li>
                                 <li><a class="nav-link {{ (Route::currentRouteName() == 'verifikasi_member_baru')?'nav-active':'' }}"
                                         href="{{url('verifikasi_member_baru')}}">Verifikasi Member</a></li>
-                            </ul>
-                        </li>
-                        <li class="menu-header">PENJUALAN</li>
-                        <li class="nav-item dropdown
-                                @if(Route::currentRouteName() == 'stock_snack')
-                                    active
-                                @endif">
-                            <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                                    class="fas fa-coffee"></i>
-                                <span>Penjualan</span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link {{ (Route::currentRouteName() == 'stock_snack')?'nav-active':'' }}"
-                                        href="{{url('stock_snack')}}">Food and Drink</a></li>
                             </ul>
                         </li>
                     </ul>
