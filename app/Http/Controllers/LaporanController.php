@@ -100,10 +100,13 @@ class LaporanController extends Controller
             if ($role_id == 3) {
                 $pesanan = DB::table('jadwal_pertandingan')
                         ->LEFTJOIN('member','jadwal_pertandingan.id_pertandingan', 'member.jadwal')
+                        ->LEFTJOIN('jenis_pembayaran','jadwal_pertandingan.metode_pembayaran', 'jenis_pembayaran.id_pembayaran')
                         ->LEFTJOIN('non_member','jadwal_pertandingan.id_pertandingan', 'non_member.jadwal')
                         ->LEFTJOIN('paket','jadwal_pertandingan.paket', 'paket.id_paket')
                         ->LEFTJOIN('status_pesanan', 'jadwal_pertandingan.flag_status', 'status_pesanan.id_status_pesanan')
                         ->select(
+
+                            'jenis_pembayaran.diskripsi as pembayaran',
                             'jadwal_pertandingan.id_pertandingan as jadwal',
                             'jadwal_pertandingan.tanggal_pertandingan as tanggal',
                             'jadwal_pertandingan.jam_pertandingan as jam',
@@ -138,8 +141,10 @@ class LaporanController extends Controller
                         ->LEFTJOIN('member','jadwal_pertandingan.id_pertandingan', 'member.jadwal')
                         ->LEFTJOIN('non_member','jadwal_pertandingan.id_pertandingan', 'non_member.jadwal')
                         ->LEFTJOIN('paket','jadwal_pertandingan.paket', 'paket.id_paket')
+                        ->LEFTJOIN('jenis_pembayaran','jadwal_pertandingan.metode_pembayaran', 'jenis_pembayaran.id_pembayaran')
                         ->LEFTJOIN('status_pesanan', 'jadwal_pertandingan.flag_status', 'status_pesanan.id_status_pesanan')
                         ->select(
+                            'jenis_pembayaran.diskripsi as pembayaran',
                             'jadwal_pertandingan.id_pertandingan as jadwal',
                             'jadwal_pertandingan.tanggal_pertandingan as tanggal',
                             'jadwal_pertandingan.jam_pertandingan as jam',
@@ -175,6 +180,7 @@ class LaporanController extends Controller
         }
                         // dd($pesanan);
          return view('home.detail.laporan-keuangan-futsal-detail',compact('pesanan', 'jml_batal_transaksi', 'jml_selesai_transaksi'));
+
 
     }
 
